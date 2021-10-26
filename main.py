@@ -1,5 +1,6 @@
 import argparse
 from Data import fetch
+import explore
 import pandas as pd
 
 parser = argparse.ArgumentParser()
@@ -8,4 +9,5 @@ parser.add_argument('-type', default=None)
 args = parser.parse_args()
 
 data = fetch.from_csv(args.source)
-print(data.head)
+
+explore.describe(data)
