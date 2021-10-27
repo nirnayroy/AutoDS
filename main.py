@@ -9,5 +9,3 @@ parser.add_argument('-type', default=None)
 args = parser.parse_args()
 
 data = fetch.from_csv(args.source)
-
-explore.info                                                                            (data)
