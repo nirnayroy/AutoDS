@@ -10,4 +10,4 @@ args = parser.parse_args()
 
 data = fetch.from_csv(args.source)
 
-explore.describe(data)
+explore.info                                                                            (data)
