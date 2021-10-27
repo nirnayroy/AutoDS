@@ -1,5 +1,3 @@
-from pandas.core.arrays import categorical
-
 class Explorer:
     def __init__(self, data, dependentVars) -> None:
         self.data = data
