@@ -1,4 +1,6 @@
+import pandas as pd
 import numpy as np
+from scipy.sparse import data
 from sklearn.model_selection import train_test_split
 
 class Explorer:
@@ -8,7 +10,7 @@ class Explorer:
         self.X, self.y = self.splitXy()
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, 
                                                                                 self.y)
-        self.categorical, self.numerical = self.separateCatNum()
+        #self.categorical, self.numerical = self.separateCatNum()
         self.printOutputType()
 
     def splitXy(self):
@@ -33,9 +35,24 @@ class Explorer:
         train, test = df[msk], df[~msk]
         return train, test
     
-    def findCategories(self):
+    def findCategories(selfSS):
         for col in self.categorical:
-            print(col, ':', dataExp.categorical[col].cat.categories)
+            print(col, ':', data.categorical[col].cat.categories)
+
+    def askContOrDisc(self):
+        cont = pd.DataFrame()
+        disc = pd.DataFrame()
+        for col in self.X:
+            # print no entries, unique entries and null values
+            print(col, 'has ', len(self.X[col].unique()), ' unique entries out of',len(self.X[col]),'entries belonging to',
+            self.X[col].dtype,'datatype')
+            type = input('Is dicrete or continuous? Press d for discrete and c for continuous.')
+            if type == 'd':
+                # add column to dataframe
+                cont[col] = self.X[col]
+            else:
+                # add column to dataframe
+                disc[col] = self.X[col]
 
     def printOutputType(self):
         print('Output Type:', self.y_train.dtypes)
@@ -50,3 +67,4 @@ if __name__ == '__main__':
     from Data import fetch
     data = fetch.from_csv('Data/train.csv')
     dataExp = Explorer(data, ['SalePrice'])
+    dataExp.askContOrDisc()
