@@ -35,7 +35,7 @@ class Explorer:
         train, test = df[msk], df[~msk]
         return train, test
     
-    def findCategories(selfSS):
+    def findCategories(self):
         for col in self.categorical:
             print(col, ':', data.categorical[col].cat.categories)
 
@@ -44,7 +44,7 @@ class Explorer:
         disc = pd.DataFrame()
         for col in self.X:
             # print no entries, unique entries and null values
-            print(col, 'has ', len(self.X[col].unique()), ' unique entries out of',len(self.X[col]),'entries belonging to',
+            print(col, 'has ', len(self.X[col].unique()), ' unique entries out of', len(self.X[col]),'entries belonging to',
             self.X[col].dtype,'datatype')
             type = input('Is dicrete or continuous? Press d for discrete and c for continuous.')
             if type == 'd':
