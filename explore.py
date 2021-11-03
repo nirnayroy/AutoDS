@@ -8,20 +8,13 @@ class Explorer:
         self.data = data
         self.dependentVars = dependentVars
         self.X, self.y = self.splitXy()
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, 
-                                                                                self.y)
-        #self.categorical, self.numerical = self.separateCatNum()
-        self.printOutputType()
+        self.askRegOrClass()
+        self.askContOrDisc()
 
     def splitXy(self):
         X = self.data.drop(self.dependentVars, axis=1)
         y = self.findDependentVars()
         return X, y
-
-    def separateCatNum(self):
-        categorical = self.X_train.select_dtypes(include=[object]).astype("category")
-        numerical = self.X_train.select_dtypes(exclude=[object])
-        return categorical, numerical
 
     def findDependentVars(self):
         try:
@@ -34,28 +27,36 @@ class Explorer:
         msk = np.random.rand(len(df)) < 0.8
         train, test = df[msk], df[~msk]
         return train, test
-    
-    def findCategories(self):
-        for col in self.categorical:
-            print(col, ':', data.categorical[col].cat.categories)
 
+    def askRegOrClass(self):
+        print(self.dependentVars, 'has ', self.y[self.dependentVars].nunique(), 'unique entries out of', self.y[self.dependentVars].count(),'entries belonging to',
+            self.y[self.dependentVars].dtypes,'datatype')
+        type = input('Is dicrete or continuous? Press d for discrete and c for continuous.')
+        if type == 'd':
+            print('It is a classification problem')
+        elif type == 'c':
+            print('It is a regression problem')
+        else:
+            pass
+        
     def askContOrDisc(self):
         cont = pd.DataFrame()
         disc = pd.DataFrame()
         for col in self.X:
             # print no entries, unique entries and null values
-            print(col, 'has ', len(self.X[col].unique()), ' unique entries out of', len(self.X[col]),'entries belonging to',
+            print(col, 'has ', self.X[col].nunique(), 'unique entries out of', self.X[col].count(),'entries belonging to',
             self.X[col].dtype,'datatype')
             type = input('Is dicrete or continuous? Press d for discrete and c for continuous.')
             if type == 'd':
                 # add column to dataframe
                 cont[col] = self.X[col]
-            else:
+            elif type == 'c':
                 # add column to dataframe
                 disc[col] = self.X[col]
-
-    def printOutputType(self):
-        print('Output Type:', self.y_train.dtypes)
+            else:
+                pass
+        print(cont.shape, disc.shape)
+        return cont, disc
 
     def printDescription(self):
         print('Description:', self.data.describe())
@@ -65,6 +66,5 @@ class Explorer:
 
 if __name__ == '__main__':
     from Data import fetch
-    data = fetch.from_csv('Data/train.csv')
-    dataExp = Explorer(data, ['SalePrice'])
-    dataExp.askContOrDisc()
+    data = fetch.from_csv('Data/telecom_churn.csv')
+    dataExp = Explorer(data, ['Churn'])
